@@ -4,9 +4,7 @@
 
 from flask import Flask
 from flask_script import Manager
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
-import datetime
 
 app = Flask(__name__)
 
