@@ -1,4 +1,4 @@
-""" Main App File for Bajigur Project
+""" Main App for Bajigur Project
     @author     barru.kurniawan@gmail.com
     @created    2020-11-11 """
 
