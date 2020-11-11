@@ -2,7 +2,7 @@
     @author     barru.kurniawan@gmail.com
     @created    2020-11-10 """
 
-from db import *
+from db import db
 import datetime
 
 class User(db.Model):
