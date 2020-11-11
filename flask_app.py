@@ -3,16 +3,22 @@
     @created    2020-11-11 """
 
 from flask import Flask, request
-from db import db
+from flask_sqlalchemy import SQLAlchemy
+from db import db, app
 from models import Point, UserPoint, UserPointLog
 import datetime
 
-app = Flask(__name__)
-db.init_app(app)
+sqldb = SQLAlchemy(app)
+sqldb.init_app(app)
+sqldb.create_all()
 
 @app.route('/')
 def hello_world():
     return 'Welcome to Bajigur Cloth Project!'
+
+@app.route('/home')
+def home():
+    return 'Welcome to Home of Project!'
 
 @app.route('/point')
 def user_point():
