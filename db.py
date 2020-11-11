@@ -1,4 +1,4 @@
-""" DB Models for Bajigur Project
+""" DB Connection for Bajigur Project
     @author     barru.kurniawan@gmail.com
     @created    2020-11-10 """
 
