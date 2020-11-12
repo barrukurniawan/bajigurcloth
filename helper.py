@@ -3,7 +3,7 @@ import re
 
 class Helper():
 
-    def pagination(total, paginate, limit, page):
+    def pagination(total, paginate, limit):
 
       current_page = re.sub('&page=|&page=\\d+', '', request.url)
 
@@ -20,7 +20,7 @@ class Helper():
       return {
           'total_rows': total,
           'rows_per_page': limit,
-          'current_page': request.url,
+          'current_page': current_page,
           'total_page': paginate.pages,
           'prev_page_num': prev_page_num,
           'next_page_num': next_page_num

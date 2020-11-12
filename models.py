@@ -81,3 +81,28 @@ class VoucherLog(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.datetime.now())
     deleted_at = db.Column(db.DateTime, nullable=True)
 
+class MessageThread(db.Model):
+
+    __tablename__ = "message_thread"
+
+    id = db.Column(db.BigInteger, primary_key=True)
+    subject = db.Column(db.String(255), nullable=False)
+    from_user_id = db.Column(db.BigInteger, index=True)
+    to_user_id = db.Column(db.BigInteger, index=True)
+    message_type = db.Column(db.Enum("STOK", "PRODUK", "COMPLAINT"), default="PRODUK")
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    deleted_at = db.Column(db.DateTime, nullable=True)
+
+
+class Message(db.Model):
+
+    __tablename__ = "message"
+
+    id = db.Column(db.BigInteger, primary_key=True)
+    message_thread_id = db.Column(db.BigInteger, index=True)
+    user_id = db.Column(db.BigInteger, index=True)
+    message = db.Column(db.String(500), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    deleted_at = db.Column(db.DateTime, nullable=True)

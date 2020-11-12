@@ -5,6 +5,8 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from db import db, app
+from helper import Helper, Formatter
+from formatter import user_point_formatter
 from models import User, Point, UserPoint, UserPointLog, Voucher, VoucherLog
 import datetime
 
@@ -25,22 +27,27 @@ def home():
 @app.route('/point', methods=["GET"])
 def user_point():
     data = list()
+    limit_per_page = 10
+    current_page = 1
 
-    points = UserPoint.query.filter(UserPoint.deleted_at == None) \
-            .all()
+    points = UserPoint.query.filter(UserPoint.deleted_at == None)
+    #         .all()
+    # db.session.commit()
+
+    data_paginate = points.paginate(current_page, limit_per_page, error_out=False)
     db.session.commit()
 
-    for x in points:
-        data.append({
-            "user_id": x.user_id,
-            "level"  : x.total_point
-        })
+    # for x in points:
+    #     data.append({
+    #         "user_id": x.user_id,
+    #         "level"  : x.total_point
+    #     })
 
     response = {
-        "data": data,
+        "data": Formatter(template=user_point_formatter, data=points).result,
         "message": "list user point",
         "status_code": 200,
-        "paginate": ""
+        "paginate": Helper.pagination(total=points.count(), paginate=data_paginate, limit=limit_per_page)
     }
 
     return response
