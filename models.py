@@ -13,6 +13,7 @@ class User(db.Model):
     firstname = db.Column(db.String(50), index=True)
     lastname = db.Column(db.String(50), index=True)
     email = db.Column(db.String(100), index=True, unique=True)
+    membership = db.Column(db.BOOLEAN, default=0)
     password_hash = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, default=datetime.datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.datetime.now())
