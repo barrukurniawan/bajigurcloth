@@ -5,7 +5,7 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from db import db, app
-from models import Point, UserPoint, UserPointLog
+from models import User, Point, UserPoint, UserPointLog, Voucher, VoucherLog
 import datetime
 
 sqldb = SQLAlchemy(app)
@@ -20,7 +20,9 @@ def hello_world():
 def home():
     return 'Welcome to Home of Project!'
 
-@app.route('/point')
+# CRUD POINT
+
+@app.route('/point', methods=["GET"])
 def user_point():
     data = list()
 
@@ -38,7 +40,7 @@ def user_point():
         "data": data,
         "message": "list user point",
         "status_code": 200,
-        "meta": ""
+        "paginate": ""
     }
 
     return response
@@ -53,8 +55,8 @@ def create_point():
         response = {
             "data": "not found",
             "message": "list user point",
-            "status_code": 400,
-            "meta": ""
+            "status_code": 404,
+            "paginate": ""
         }
         return response
 
@@ -73,8 +75,8 @@ def create_point():
         response = {
             "data": "data is exist",
             "message": "list point",
-            "status_code": 200,
-            "meta": ""
+            "status_code": 204,
+            "paginate": ""
         }
     else:
         data.level = level
@@ -89,7 +91,7 @@ def create_point():
             "data": data,
             "message": "list user point",
             "status_code": 200,
-            "meta": ""
+            "paginate": ""
         }
 
     return response
