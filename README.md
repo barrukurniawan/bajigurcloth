@@ -33,16 +33,16 @@
 
 * [Create Message](http://bajigurcloth.pythonanywhere.com/pesan)
 
-![image](https://drive.google.com/uc?export=view&id=1cfpW-4fLRoLBxxojIp9i85v2w_Rvkzd1/view?usp=sharing)
+![image](https://drive.google.com/uc?export=view&id=1cfpW-4fLRoLBxxojIp9i85v2w_Rvkzd1)
 
 * [Admin Portal](http://bajigurcloth.pythonanywhere.com/admin-message)
 
-![image](https://drive.google.com/uc?export=view&id=1864pHdueZUFG03Vo-CNbsOCij37MfIMV/view?usp=sharing)
+![image](https://drive.google.com/uc?export=view&id=1864pHdueZUFG03Vo-CNbsOCij37MfIMV)
 
 * [Detail Message](http://bajigurcloth.pythonanywhere.com/detail-message/1)
 
-![image](https://drive.google.com/uc?export=view&id=1emOg1fGWrtSZMRBExsrA6NfiVuKPcJZy/view?usp=sharing)
+![image](https://drive.google.com/uc?export=view&id=1emOg1fGWrtSZMRBExsrA6NfiVuKPcJZy)
 
 * [Member](http://bajigurcloth.pythonanywhere.com/member)
 
-![image](https://drive.google.com/uc?export=view&id=13Xj6jz6R1ASydqxKcY5sJ-ymS84uIYl5/view?usp=sharing)
+![image](https://drive.google.com/uc?export=view&id=13Xj6jz6R1ASydqxKcY5sJ-ymS84uIYl5)
