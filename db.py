@@ -19,4 +19,4 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-from models import User, UserPoint, UserPointLog, Point
+from models import User, Message, MessageThread

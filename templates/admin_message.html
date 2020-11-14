@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bajigur | Admin</title>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+input[type=text], select {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=number], select {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 13px;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.button3 {border-radius: 8px;}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+</style>
+</head>
+<body>
+
+    <div class="navbar">
+      <a href="/">Home</a>
+      <a href="/pesan">Create Message</a>
+      <a href="/admin-message">Admin Portal</a>
+      <a href="/member">Member</a>
+    </div>
+
+    <br>
+
+    <h2>Admin Portal</h2>
+
+    <div>
+      <form action="/admin-message">
+      	<h3>Search Box</h3>
+
+        <input type="text" id="subject" placeholder="Judul Pesan..">
+
+        <input type="number" id="customer_name" placeholder="Nama customer..">
+
+        <select id="message_type">
+          <option value="PRODUK">Produk</option>
+          <option value="COMPLAINT">Komplain</option>
+          <option value="STOK">Stok</option>
+        </select>
+
+        <input type="button" id="search" value="Submit">
+      </form>
+    </div>
+
+    <br>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tipe Pesan</th>
+          <th>Judul Pesan</th>
+          <th>Pengirim</th>
+          <th>Created At</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="list_thread"></tbody>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+
+        function listChat() {
+            subject = $('#subject').val();
+
+            $.ajax({
+                type: 'GET',
+                url: `/message-thread?subject=` + subject,
+                success: function (data) {
+                    let h = "";
+
+                    for(let i=0; i<data.data.length; i++){
+                        let item = data.data[i];
+
+                        h += `<tr>`
+                        h += `  <td>
+                                    <strong>${item.message_type}</strong>
+                                </td>`
+                        h += `  <td>${item.subject}</td>`
+                        h += `  <td>${item.nama_pengirim}</td>`
+                        h += `  <td>${item.created_at}</td>`
+                        h += `  <td><a href='/detail-message/${item.id}'><button class="button button3">click</button></a></td>`
+                        h += `</tr>`
+
+                    }
+
+                    $("#list_thread").html(h);
+                },
+                error: function(data) {
+                    console.log(data);
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Gagal Memuat Pesan!'
+                    })
+                }
+            });
+
+        }
+
+        $(document).ready(function (){
+            listChat();
+
+            $('#search').click(function (event) {
+                listChat();
+            });
+        });
+    </script>
+</body>
+</html>

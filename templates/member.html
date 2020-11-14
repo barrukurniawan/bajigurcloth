@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bajigur | Member</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.gold {
+  border-color: #f6d56d;
+  background-color: #efc501;
+}
+
+.platinum {
+  border-color: #eafafd;
+  background-color: #eafafd;
+}
+
+.silver {
+  border-color: #eaeef1;
+  background-color: #eaeef1;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.time-right {
+  float: right;
+  color: #0e2433;
+}
+
+.time-left {
+  float: left;
+  color: #0e2433;
+}
+
+.purple-border textarea {
+    border: 1px solid #ba68c8;
+}
+.purple-border .form-control:focus {
+    border: 1px solid #ba68c8;
+    box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=number], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="/">Home</a>
+  <a href="/pesan">Create Message</a>
+  <a href="/admin-message">Admin Portal</a>
+  <a href="/member">Member</a>
+</div>
+
+<br>
+    <select id="user_id" onchange="getChat(value);">
+      <option value=1>Cecep</option>
+      <option value=2>Ahmad</option>
+      <option value=3>Ratna</option>
+      <option value=6>Semongko</option>
+    </select>
+
+    <div id="member">
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+
+        function getChat(user_id) {
+            console.log(user_id);
+            $.ajax({
+                type: 'GET',
+                url: `/users?user_id=` + user_id,
+                success: function (data) {
+                    let h = "";
+
+                    for(let i=0; i<data.data.length; i++){
+                        let item = data.data[i];
+
+                        if (item.level === "silver"){
+                            h += `<div class="container silver">`
+                        }else if (item.level === "gold"){
+                            h += `<div class="container gold">`
+                        }else if (item.level === "platinum"){
+                            h += `<div class="container platinum">`
+                        }
+
+                        h += `<h3 style="text-align:center">${item.level} Member</h3>`
+                        h += `  <p >${item.username}</p>`
+                        h += `  <b><p >${item.email}</p></b>`
+                        h += `  <span class="time-left">Jumlah transaksi</span><br>`
+                        h += `  <h3>${item.jumlah_transaksi}</h3>`
+                        h += `  <span class="time-left">Total transaksi</span><br>`
+                        h += `  <h2>${item.total_transaksi}</h2>`
+                        h += `  <b><p>${item.reward}</p></b>`
+                        h += `  <span class="time-left">member since ${item.created_at}</span>`
+                        h += `</div>`
+
+                    }
+
+                    $("#member").html(h);
+                },
+                error: function(data) {
+                    console.log(data);
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Ada apa ni!'
+                    })
+                }
+            });
+
+        }
+
+        $(document).ready(function (){
+            getChat(1);
+        });
+    </script>
+
+</body>
+</html>
