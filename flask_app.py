@@ -18,15 +18,15 @@ sqldb.create_all()
 ########## Render Template ##########
 
 @app.route('/')
-def hello_world():
+def home_page():
     return render_template("index.html")
 
 @app.route('/pesan')
-def kirim_pesan():
+def message_page():
     return render_template("message.html")
 
 @app.route('/admin-message')
-def admin_message():
+def admin_message_page():
     return render_template("admin_message.html")
 
 @app.route('/member')
@@ -36,9 +36,9 @@ def member_page():
 @app.route('/detail-message/<thread_id>')
 def reply_msg(thread_id):
     data = thread_id
-    nama = ""
-    judul = ""
     user_id = 0
+    judul = ""
+    nama = ""
 
     detail_thread = MessageThread.query.filter(MessageThread.deleted_at == None).filter(MessageThread.id == int(data)).first()
     db.session.commit()
@@ -52,7 +52,6 @@ def reply_msg(thread_id):
 
         if check_user is not None:
             nama = check_user.firstname + " " + check_user.lastname
-
 
     return render_template("reply_message.html", data=data, nama=nama, judul=judul, user_id=user_id)
 
@@ -251,31 +250,30 @@ def get_message(chat_id):
 
 @app.route('/message-thread', methods=["GET"])
 def list_message_thread():
-    subject = ""
-    message_type = ""
-    name = ""
     list_id = list()
+    message_type = ""
+    subject = ""
+    name = ""
 
-    limit_per_page = 10
     current_page = 1
+    limit_per_page = 10
 
-    list_message = MessageThread.query.filter(MessageThread.deleted_at == None)
+    list_message = MessageThread.query.filter(MessageThread.deleted_at == None).order_by(MessageThread.created_at.desc())
 
     if "subject" in request.args :
         subject = request.args["subject"]
-        if request.args["subject"] != "":
-            list_message = list_message.filter(MessageThread.subject.like("%" + str(request.args["subject"]) + "%"))
+        if subject != "":
+            list_message = list_message.filter(MessageThread.subject.like("%" + str(subject) + "%"))
 
     if "message_type" in request.args :
         message_type = str(request.args["message_type"])
-        if request.args["message_type"] != "":
-            list_message = list_message.filter(MessageThread.message_type == str(request.args["message_type"]))
+        if message_type != "":
+            list_message = list_message.filter(MessageThread.message_type == str(message_type))
 
     if "name" in request.args :
         name = str(request.args["name"])
-        if request.args["name"] != "":
-
-            check_user = User.query.filter_by(deleted_at=None).filter(or_(User.firstname.like("%" + str(request.args["name"]) + "%") , User.lastname.like("%" + str(request.args["name"]) + "%"))).all()
+        if name != "":
+            check_user = User.query.filter_by(deleted_at=None).filter(or_(User.firstname.like("%" + str(name) + "%") , User.lastname.like("%" + str(name) + "%"))).all()
             db.session.commit()
 
             for x in check_user:
@@ -337,8 +335,8 @@ def user_list():
 
     if "user_id" in request.args :
         user_id = request.args["user_id"]
-        if request.args["user_id"] != "":
-            customer = customer.filter(User.id == int(request.args["user_id"]))
+        if user_id != "":
+            customer = customer.filter(User.id == int(user_id))
 
     data_paginate = customer.paginate(current_page, limit_per_page, error_out=False)
     db.session.commit()

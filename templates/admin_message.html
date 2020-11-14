@@ -155,7 +155,7 @@ div {
                 url: `/message-thread?subject=` + subject + `&name=` + customer_name,
                 success: function (data) {
                     let h = "";
-
+                    console.log(data.data);
                     for(let i=0; i<data.data.length; i++){
                         let item = data.data[i];
 
