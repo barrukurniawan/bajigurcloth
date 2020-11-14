@@ -15,11 +15,10 @@ sqldb = SQLAlchemy(app)
 sqldb.init_app(app)
 sqldb.create_all()
 
-#### Render Template ####
+########## Render Template ##########
 
 @app.route('/')
 def hello_world():
-    # return 'Welcome to Bajigur Cloth Project!'
     return render_template("index.html")
 
 @app.route('/pesan')
@@ -57,38 +56,46 @@ def reply_msg(thread_id):
 
     return render_template("reply_message.html", data=data, nama=nama, judul=judul, user_id=user_id)
 
-@app.route('/create-user', methods=["POST"])
-def create_user():
+########## End of Render Template ##########
 
-    data = User()
+@app.route('/message', methods=["GET"])
+def list_message():
+    message = ""
+    user_id = 0
+    message_thread_id = 0
 
-    data.firstname = request.form["firstname"]
-    data.lastname = request.form["lastname"]
-    data.email = request.form["email"]
-    data.password_hash = request.form["password"]
-    data.membership = int(request.form["membership"])
-    data.created_at = datetime.datetime.now()
-    data.updated_at = datetime.datetime.now()
+    limit_per_page = 10
+    current_page = 1
 
-    db.session.add(data)
+    list_message = Message.query.filter(Message.deleted_at == None)
+
+    if "message" in request.args :
+        message = request.args["message"]
+        if request.args["message"] != "":
+            list_message = list_message.filter(Message.message.like("%" + str(request.args["message"]) + "%"))
+
+    if "user_id" in request.args :
+        user_id = int(request.args["user_id"])
+        if request.args["user_id"] != "":
+            list_message = list_message.filter(Message.user_id == int(request.args["user_id"]))
+
+    if "message_thread_id" in request.args :
+        message_thread_id = int(request.args["message_thread_id"])
+        if request.args["message_thread_id"] != "":
+            list_message = list_message.filter(Message.message_thread_id == int(request.args["message_thread_id"]))
+
+    data_paginate = list_message.paginate(current_page, limit_per_page, error_out=False)
     db.session.commit()
 
-    hasil = {
-        "created_at" : data.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-        "user_id" : data.id,
-        "username" : data.firstname + " " + data.lastname
-    }
-
     response = {
-        "data": hasil,
-        "message": "created user!",
+        "data": Formatter(template=message_formatter, data=list_message).result,
+        "message": "list message",
         "status_code": 200,
-        "paginate": ""
+        "paginate": Helper.pagination(total=list_message.count(), paginate=data_paginate, limit=limit_per_page)
     }
 
     return response
 
-#### CRUD Message ####
 @app.route('/create-message', methods=["POST"])
 def create_message():
     subject = ""
@@ -208,44 +215,6 @@ def reply_message():
 
     return response
 
-@app.route('/message', methods=["GET"])
-def list_message():
-    message = ""
-    user_id = 0
-    message_thread_id = 0
-
-    limit_per_page = 10
-    current_page = 1
-
-    list_message = Message.query.filter(Message.deleted_at == None)
-
-    if "message" in request.args :
-        message = request.args["message"]
-        if request.args["message"] != "":
-            list_message = list_message.filter(Message.message.like("%" + str(request.args["message"]) + "%"))
-
-    if "user_id" in request.args :
-        user_id = int(request.args["user_id"])
-        if request.args["user_id"] != "":
-            list_message = list_message.filter(Message.user_id == int(request.args["user_id"]))
-
-    if "message_thread_id" in request.args :
-        message_thread_id = int(request.args["message_thread_id"])
-        if request.args["message_thread_id"] != "":
-            list_message = list_message.filter(Message.message_thread_id == int(request.args["message_thread_id"]))
-
-    data_paginate = list_message.paginate(current_page, limit_per_page, error_out=False)
-    db.session.commit()
-
-    response = {
-        "data": Formatter(template=message_formatter, data=list_message).result,
-        "message": "list message",
-        "status_code": 200,
-        "paginate": Helper.pagination(total=list_message.count(), paginate=data_paginate, limit=limit_per_page)
-    }
-
-    return response
-
 @app.route('/get-message/<chat_id>', methods=["GET"])
 def get_message(chat_id):
     message = ""
@@ -327,6 +296,37 @@ def list_message_thread():
 
     return response
 
+@app.route('/create-user', methods=["POST"])
+def create_user():
+
+    data = User()
+
+    data.firstname = request.form["firstname"]
+    data.lastname = request.form["lastname"]
+    data.email = request.form["email"]
+    data.password_hash = request.form["password"]
+    data.membership = int(request.form["membership"])
+    data.created_at = datetime.datetime.now()
+    data.updated_at = datetime.datetime.now()
+
+    db.session.add(data)
+    db.session.commit()
+
+    hasil = {
+        "created_at" : data.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        "user_id" : data.id,
+        "username" : data.firstname + " " + data.lastname
+    }
+
+    response = {
+        "data": hasil,
+        "message": "created user!",
+        "status_code": 200,
+        "paginate": ""
+    }
+
+    return response
+
 @app.route('/users', methods=["GET"])
 def user_list():
     limit_per_page = 10
@@ -352,4 +352,5 @@ def user_list():
 
     return response
 
-#### End of Message ####
+# Hapus command pada app.run dibawah untuk menjalankan di local
+# app.run()
