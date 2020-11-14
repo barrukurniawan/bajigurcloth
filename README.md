@@ -11,16 +11,16 @@
 
 
 **Main App File     :**
-* open bajigurcloth/flask_app.py
+* open `bajigurcloth/flask_app.py`
 
 
 **Migration File    :**
-* open bajigurcloth/migrate.py
+* open `bajigurcloth/migrate.py`
 
 
 **Models DB File    :**
-* open bajigurcloth/models.py
+* open `bajigurcloth/models.py`
 
 
 **Templates File    :**
-* backend-rest-organic/templates/..
+* open `backend-rest-organic/templates/..`
