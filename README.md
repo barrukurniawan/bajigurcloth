@@ -4,7 +4,6 @@
 * [bajigurcloth](http://bajigurcloth.pythonanywhere.com/)
 
 **Visit Postman link of Bajigur Project :**
-click here :
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/8725be96cd3d210245b6)
 
@@ -62,5 +61,5 @@ or click :
 
 ![image](https://drive.google.com/uc?export=view&id=13Xj6jz6R1ASydqxKcY5sJ-ymS84uIYl5)
 
-**Catatan**
+**Catatan : **
 Belum tersedia authorize untuk tiap API, validasi form dari backend *sementara validasi via form html*
