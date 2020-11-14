@@ -7,7 +7,7 @@
 
 
 **Install Application:**
-*Maaf sebelumnya, lupa pakai env, ke up semua library di local di requirements*
+* *Maaf sebelumnya, lupa pakai env, ke up semua library di local di requirements*
 * install requirements `sudo pip3 install -r requirements.txt`
 
 
