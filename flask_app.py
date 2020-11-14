@@ -74,12 +74,12 @@ def list_message():
             list_message = list_message.filter(Message.message.like("%" + str(request.args["message"]) + "%"))
 
     if "user_id" in request.args :
-        user_id = int(request.args["user_id"])
+        user_id = request.args["user_id"]
         if request.args["user_id"] != "":
             list_message = list_message.filter(Message.user_id == int(request.args["user_id"]))
 
     if "message_thread_id" in request.args :
-        message_thread_id = int(request.args["message_thread_id"])
+        message_thread_id = request.args["message_thread_id"]
         if request.args["message_thread_id"] != "":
             list_message = list_message.filter(Message.message_thread_id == int(request.args["message_thread_id"]))
 
