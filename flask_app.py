@@ -298,7 +298,7 @@ def list_message_thread():
             list_message = list_message.filter(MessageThread.subject.like("%" + str(request.args["subject"]) + "%"))
 
     if "message_type" in request.args :
-        message_type = int(request.args["message_type"])
+        message_type = str(request.args["message_type"])
         if request.args["message_type"] != "":
             list_message = list_message.filter(MessageThread.message_type == str(request.args["message_type"]))
 

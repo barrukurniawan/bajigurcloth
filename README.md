@@ -25,3 +25,8 @@
 
 **Templates File    :**
 * open `backend-rest-organic/templates/..`
+
+**Tutorial          :**
+* [Home](http://bajigurcloth.pythonanywhere.com/)
+
+![image](https://drive.google.com/uc?export=view&id=1T62ZfO7a7ORo2tzx1Aj-YmM9ZmCLghf2)

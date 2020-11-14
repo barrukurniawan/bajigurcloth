@@ -115,7 +115,7 @@ div {
 
         <input type="text" id="subject" placeholder="Judul Pesan..">
 
-        <input type="number" id="customer_name" placeholder="Nama customer..">
+        <input type="text" id="customer_name" placeholder="Nama customer..">
 
         <select id="message_type">
           <option value="PRODUK">Produk</option>
@@ -148,10 +148,11 @@ div {
 
         function listChat() {
             subject = $('#subject').val();
+            customer_name = $('#customer_name').val();
 
             $.ajax({
                 type: 'GET',
-                url: `/message-thread?subject=` + subject,
+                url: `/message-thread?subject=` + subject + `&name=` + customer_name,
                 success: function (data) {
                     let h = "";
 
