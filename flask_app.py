@@ -1,8 +1,10 @@
 """ Main App for Bajigur Project
     @author     barru.kurniawan@gmail.com
-    @created    2020-11-11 """
+    @created    2020-11-11
+    test coding """
 
 from flask import Flask, request, render_template, jsonify
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from db import db, app
@@ -70,18 +72,18 @@ def list_message():
 
     if "message" in request.args :
         message = request.args["message"]
-        if request.args["message"] != "":
-            list_message = list_message.filter(Message.message.like("%" + str(request.args["message"]) + "%"))
+        if message != "":
+            list_message = list_message.filter(Message.message.like("%" + str(message) + "%"))
 
     if "user_id" in request.args :
         user_id = request.args["user_id"]
-        if request.args["user_id"] != "":
-            list_message = list_message.filter(Message.user_id == int(request.args["user_id"]))
+        if user_id != "":
+            list_message = list_message.filter(Message.user_id == int(user_id))
 
     if "message_thread_id" in request.args :
         message_thread_id = request.args["message_thread_id"]
-        if request.args["message_thread_id"] != "":
-            list_message = list_message.filter(Message.message_thread_id == int(request.args["message_thread_id"]))
+        if message_thread_id != "":
+            list_message = list_message.filter(Message.message_thread_id == int(message_thread_id))
 
     data_paginate = list_message.paginate(current_page, limit_per_page, error_out=False)
     db.session.commit()
@@ -228,13 +230,13 @@ def get_message(chat_id):
 
     if "message" in request.args :
         message = request.args["message"]
-        if request.args["message"] != "":
-            list_message = list_message.filter(Message.message.like("%" + str(request.args["message"]) + "%"))
+        if message != "":
+            list_message = list_message.filter(Message.message.like("%" + str(message) + "%"))
 
     if "user_id" in request.args :
         user_id = int(request.args["user_id"])
-        if request.args["user_id"] != "":
-            list_message = list_message.filter(Message.user_id == int(request.args["user_id"]))
+        if user_id != "":
+            list_message = list_message.filter(Message.user_id == int(user_id))
 
     data_paginate = list_message.paginate(current_page, limit_per_page, error_out=False)
     db.session.commit()
@@ -296,13 +298,15 @@ def list_message_thread():
 
 @app.route('/create-user', methods=["POST"])
 def create_user():
+    bcrypt = Bcrypt()
+    pw_hash = bcrypt.generate_password_hash(request.form["password"])
 
     data = User()
 
     data.firstname = request.form["firstname"]
     data.lastname = request.form["lastname"]
     data.email = request.form["email"]
-    data.password_hash = request.form["password"]
+    data.password_hash = pw_hash
     data.membership = int(request.form["membership"])
     data.created_at = datetime.datetime.now()
     data.updated_at = datetime.datetime.now()
